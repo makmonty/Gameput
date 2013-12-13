@@ -47,3 +47,10 @@ Supported keys/buttons
 * `pad0` `pad1` `pad2` `pad3` `pad4` `pad5` `pad6` `pad7` `pad8` `pad9`: Numbers in the *numeric pad*
 * `board0` `board1` `board2` `board3` `board4` `board5` `board6` `board7` `board8` `board9`: Numbers in the *main keyboard*
 * `0` `1` `2` `3` `4` `5` `6` `7` `8` `9`: Numbers in the *numeric pad* or the *main keyboard*
+
+### Mouse
+
+* `mouseleft`
+* `mouseright`
+* `mousecenter`
+* `mousecentre`: Same as `mousecenter`

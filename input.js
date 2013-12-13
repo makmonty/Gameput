@@ -20,7 +20,7 @@ INPUT.keyboard_map = {
 		'6': ['pad6','board6'], '7': ['pad7','board7'], '8': ['pad8','board8'], '9': ['pad9','board9']
 };
 INPUT.mouse_map = {
-		'mouseleft': 1, 'mousecenter': 2, 'mouseright': 3
+		'mouseleft': 1, 'mousecenter': 2, 'mouseright': 3, 'mousecentre': 'mousecenter'
 };
 
 INPUT.keyIsPressed = function(key_code) {
