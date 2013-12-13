@@ -3,12 +3,12 @@ INPUT.pressed_keys = {}; // Keyboard
 INPUT.pressed_buttons = {}; // Mouse
 	
 INPUT.keyboard_map = {
-		'backspace': 8, 'tab': 9, 'enter': 13, 'shift': 16, 'control': 17, 'alt': 18, 'capslock': 20, 'altgr': 0, 'del': 46,
+		'backspace': 8, 'tab': 9, 'enter': 13, 'shift': 16, 'control': 17, 'alt': 18, 'capslock': 20, 'altgr': 225, 'del': 46,
 		'pagedown': 33, 'pageup': 34, 'end': 35, 'home': 36,
 		'left': 37, 'up': 38, 'right': 39, 'down': 40,
 		'boardplus': 187, 'padplus': 107, 'plus': ['boardplus', 'padplus'],
 		'boardhyphen': 189, 'padhyphen': 109, 'hyphen': ['boardhyphen', 'padhyphen'], 'minus': 'hyphen',
-		'space': 32,
+		'space': 32, 'leftwindows': 91, 'rightwindows': 92, 'windows': ['leftwindows', 'rightwindows'],
 		
 		'a': 65, 'b': 66, 'c': 67, 'd': 68, 'e': 69, 'f': 70, 'g': 71, 'h': 72, 'i': 73, 'j': 74,
 		'k': 75, 'l': 76, 'm': 77, 'n': 78, 'o': 79, 'p': 80, 'q': 81, 'r': 82, 's': 83, 't': 84,
@@ -20,7 +20,8 @@ INPUT.keyboard_map = {
 		'6': ['pad6','board6'], '7': ['pad7','board7'], '8': ['pad8','board8'], '9': ['pad9','board9']
 };
 INPUT.mouse_map = {
-		'mouseleft': 1, 'mousecenter': 2, 'mouseright': 3, 'mousecentre': 'mousecenter'
+		'mouseleft': 1, 'mousecenter': 2, 'mouseright': 3, 'mousecentre': 'mousecenter',
+		'click': ['mouseleft', 'mouseright', 'mousecenter']
 };
 
 INPUT.keyIsPressed = function(key_code) {
@@ -47,7 +48,7 @@ INPUT.isPressed = function(combinations) {
 		c = combs[i].split("+");
 		combmatch = true;
 		for(j=0,m=c.length; j<m; j++) {
-			type = (c[j].substr(0,5) == "mouse")? "mouse" : "keyboard";
+			type = (typeof this.mouse_map[c[j]] != "undefined")? "mouse" : "keyboard";
 			codes = this.getCodes(c[j], type);
 			keymatch = false;
 			for(k=0,o=codes.length; k<o; k++) {
