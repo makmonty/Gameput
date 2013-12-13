@@ -6,18 +6,18 @@ INPUT.keyboard_map = {
 		'backspace': 8, 'tab': 9, 'enter': 13, 'shift': 16, 'control': 17, 'alt': 18, 'capslock': 20, 'altgr': 225, 'del': 46,
 		'pagedown': 33, 'pageup': 34, 'end': 35, 'home': 36,
 		'left': 37, 'up': 38, 'right': 39, 'down': 40,
-		'boardplus': 187, 'padplus': 107, 'plus': ['boardplus', 'padplus'],
-		'boardhyphen': 189, 'padhyphen': 109, 'hyphen': ['boardhyphen', 'padhyphen'], 'minus': 'hyphen',
+		'boardplus': 187, 'numpadplus': 107, 'plus': ['boardplus', 'numpadplus'],
+		'boardhyphen': 189, 'numpadhyphen': 109, 'hyphen': ['boardhyphen', 'numpadhyphen'], 'minus': 'hyphen',
 		'space': 32, 'leftwindows': 91, 'rightwindows': 92, 'windows': ['leftwindows', 'rightwindows'],
 		
 		'a': 65, 'b': 66, 'c': 67, 'd': 68, 'e': 69, 'f': 70, 'g': 71, 'h': 72, 'i': 73, 'j': 74,
 		'k': 75, 'l': 76, 'm': 77, 'n': 78, 'o': 79, 'p': 80, 'q': 81, 'r': 82, 's': 83, 't': 84,
 		'u': 85, 'v': 86, 'w': 87, 'x': 88, 'y': 89, 'z': 90,
 	
-		'pad0': 96, 'pad1': 97, 'pad2': 98, 'pad3': 99, 'pad4': 100, 'pad5': 101, 'pad6': 102, 'pad7': 103, 'pad8': 104, 'pad9': 105,
+		'numpad0': 96, 'numpad1': 97, 'numpad2': 98, 'numpad3': 99, 'numpad4': 100, 'numpad5': 101, 'numpad6': 102, 'numpad7': 103, 'numpad8': 104, 'numpad9': 105,
 		'board0': 48, 'board1': 49, 'board2': 50, 'board3': 51, 'board4': 52, 'board5': 53, 'board6': 54, 'board7': 55, 'board8': 56, 'board9': 57,
-		'0': ['pad0','board0'], '1': ['pad1','board1'], '2': ['pad2','board2'], '3': ['pad3','board3'], '4': ['pad4','board4'], '5': ['pad5','board5'],
-		'6': ['pad6','board6'], '7': ['pad7','board7'], '8': ['pad8','board8'], '9': ['pad9','board9']
+		'0': ['numpad0','board0'], '1': ['numpad1','board1'], '2': ['numpad2','board2'], '3': ['numpad3','board3'], '4': ['numpad4','board4'],
+		'5': ['numpad5','board5'], '6': ['numpad6','board6'], '7': ['numpad7','board7'], '8': ['numpad8','board8'], '9': ['numpad9','board9']
 };
 INPUT.mouse_map = {
 		'mouseleft': 1, 'mousecenter': 2, 'mouseright': 3, 'mousecentre': 'mousecenter',
