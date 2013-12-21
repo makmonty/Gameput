@@ -1,8 +1,13 @@
 INPUT = {};
-INPUT.pressed_keys = {}; // Keyboard
-INPUT.pressed_buttons = {}; // Mouse
-	
-INPUT.keyboard_map = {
+INPUT.pressed = {};
+INPUT.pressed.combinations = {};
+INPUT.pressed.keyboard = {};
+INPUT.pressed.mouse = {};
+
+INPUT.GAMEPAD_ANALOGUE_THRESHOLD = 0.5;
+
+INPUT.map = {};
+INPUT.map.keyboard = {
 		'backspace': 8, 'tab': 9, 'enter': 13, 'shift': 16, 'control': 17, 'alt': 18, 'capslock': 20, 'altgr': 225, 'del': 46,
 		'pagedown': 33, 'pageup': 34, 'end': 35, 'home': 36,
 		'left': 37, 'up': 38, 'right': 39, 'down': 40,
@@ -19,45 +24,72 @@ INPUT.keyboard_map = {
 		'0': ['numpad0','board0'], '1': ['numpad1','board1'], '2': ['numpad2','board2'], '3': ['numpad3','board3'], '4': ['numpad4','board4'],
 		'5': ['numpad5','board5'], '6': ['numpad6','board6'], '7': ['numpad7','board7'], '8': ['numpad8','board8'], '9': ['numpad9','board9']
 };
-INPUT.mouse_map = {
+INPUT.map.mouse = {
 		'mouseleft': 1, 'mousecenter': 2, 'mouseright': 3, 'mousecentre': 'mousecenter',
 		'click': ['mouseleft', 'mouseright', 'mousecenter']
 };
+INPUT.map.gamepad = {
+		button: {
+			'1': 0,
+			'2': 1,
+			'3': 2,
+			'4': 3,
+			'L1': 4,
+			'R1': 5,
+			'L2': 6,
+			'R2': 7,
+			'select': 8,
+			'start': 9,
+			'leftanalogue': 10,
+			'rightanalogue': 11,
+			'padup': 12,
+			'paddown': 13,
+			'padleft': 14,
+			'padright': 15
+		},
+		axis: {
+			'leftanaloguehor': 0,
+			'leftanaloguevert': 1,
+			'rightanaloguehor': 2,
+			'rightanaloguevert': 3
+		}
+};
 
-INPUT.keyIsPressed = function(key_code) {
-	return typeof this.pressed_keys[key_code] != "undefined" && this.pressed_keys[key_code];
-};
-INPUT.buttonIsPressed = function(button_code) {
-	return typeof this.pressed_buttons[button_code] != "undefined" && this.pressed_buttons[button_code];
-};
 INPUT.isPressed = function(combinations) {
 	var combs = combinations.split(" "),
 		c,
-		i,
-		j,
-		k,
-		n,
-		m,
-		o,
+		i,n,
+		j,m,
+		k,o,
 		type,
 		codes,
 		combmatch,
-		keymatch;
+		keymatch,
+		gpdesc,
+		gptype;
 	
 	for(i=0,n=combs.length; i<n; i++) {
 		c = combs[i].split("+");
 		combmatch = true;
 		for(j=0,m=c.length; j<m; j++) {
-			type = (typeof this.mouse_map[c[j]] != "undefined")? "mouse" : "keyboard";
-			codes = this.getCodes(c[j], type);
+			type = this.findType(c[j]);
 			keymatch = false;
-			for(k=0,o=codes.length; k<o; k++) {
-				if(type == "mouse" && this.buttonIsPressed(codes[i]) || this.keyIsPressed(codes[k])) {
+			if(type == "mouse" || type == "keyboard") {
+				codes = this.getCodes(c[j], type);
+				for(k=0,o=codes.length; k<o; k++) {
+					if(this.pressed[type][codes[k]]) {
+						keymatch = true;
+						break;
+					}
+				}
+			} else {
+				gpdesc = this.getGamepadButtonDescription(c[j]);
+				gptype = (gpdesc.type == "axis")? "axes" : "buttons";
+				if(this.getGamepads()[gpdesc.gamepad] && Math.abs(this.getGamepads()[gpdesc.gamepad][gptype][gpdesc.num]) > this.GAMEPAD_ANALOGUE_THRESHOLD) {
 					keymatch = true;
-					break;
 				}
 			}
-			
+
 			if(!keymatch) {
 				combmatch = false;
 				break;
@@ -68,9 +100,45 @@ INPUT.isPressed = function(combinations) {
 	}
 	return false;
 };
+
+INPUT.getAxis = function(name) {
+	var gpdesc = this.getGamepadButtonDescription(name);
+	if(this.getGamepads()[gpdesc.gamepad])
+		return this.getGamepads()[gpdesc.gamepad].axes[gpdesc.num];
+	else
+		return 0;
+};
+
+INPUT.getGamepadButtonDescription = function(name) {
+	var gpcode = name.split("/");
+	var gpnum = parseInt(gpcode[0].substr(7))-1;
+	var gptype, gpbutton;
+	if(gpcode.length == 2) {
+		gptype = (typeof this.map.gamepad.button[gpcode[1]] != "undefined")? "button" : "axis";
+		gpbutton = this.map.gamepad[gptype][gpcode[1]];
+	} else {
+		gptype = gpcode[1];
+		gpbutton = parseInt(gpcode[2])-1;
+	}
 	
-INPUT.getCodes = function(str, type) {
-	var v = (type == "mouse")? this.mouse_map[str] : this.keyboard_map[str];
+	return {
+		gamepad: gpnum,
+		type: gptype,
+		num: gpbutton
+	};
+};
+
+INPUT.findType = function(name) {
+	for(var t in this.map) {
+		if(this.map.hasOwnProperty(t) && this.map[t][name])
+			return t;
+	}
+	
+	return "gamepad";
+};
+
+INPUT.getCodes = function(name, type) {
+	var v = this.map[type][name];
 	
 	if(typeof v != "undefined") {
 		if(this.isNumber(v)) {
@@ -87,33 +155,46 @@ INPUT.getCodes = function(str, type) {
 			return codes;
 		}
 	} else {
-		throw "Key "+str+" unknown";
+		throw "Key "+name+" unknown";
 	}
 	return [];
 };
 
 INPUT._manageKeyDown = function(event) {
-	this.pressed_keys[event.keyCode] = true;
+	this.pressed.keyboard[event.keyCode] = true;
 };
 INPUT._manageKeyUp = function(event) {
-	this.pressed_keys[event.keyCode] = false;
+	this.pressed.keyboard[event.keyCode] = false;
 };
-INPUT._manageButtonDown = function(event) {
-	this.pressed_buttons[event.which] = true;
+INPUT._manageMouseDown = function(event) {
+	this.pressed.mouse[event.which] = true;
 };
-INPUT._manageButtonUp = function(event) {
-	this.pressed_buttons[event.which] = false;
+INPUT._manageMouseUp = function(event) {
+	this.pressed.mouse[event.which] = false;
 };
 	
-INPUT.bind = function(comb, callback) {
-	var fn = function(e) {
-		if(INPUT.isPressed(comb)) {
+INPUT.bind = function(comb, callback, prevent_repeat) {
+	if(typeof prevent_repeat == "undefined")
+		prevent_repeat = true;
+	
+	var fndown = function(e) {
+		if(INPUT.isPressed(comb) && (!prevent_repeat || !INPUT.pressed.combinations[comb])) {
+			if(prevent_repeat) INPUT.pressed.combinations[comb] = true;
 			return callback(e);
 		}
 	};
+	
+	document.addEventListener("keydown", fndown);
+	document.addEventListener("mousedown", fndown);
 
-	document.addEventListener("keydown", fn);
-	document.addEventListener("mousedown", fn);
+	if(prevent_repeat) {
+		var fnup = function(e) {
+			INPUT.pressed.combinations[comb] = false;
+		};
+		
+		document.addEventListener("keyup", fnup);
+		document.addEventListener("mouseup", fnup);
+	}
 };
 
 INPUT.isNumber = function(n) {
@@ -124,6 +205,12 @@ INPUT.isArray = function(a) {
 	return Object.prototype.toString.call(a) === '[object Array]';
 };
 
+INPUT.getGamepads = function() {
+	return navigator.getGamepads && navigator.getGamepads()
+		|| navigator.webkitGetGamepads && navigator.webkitGetGamepads()
+		|| navigator.webkitGamepads;
+	
+};
 
 document.addEventListener("keydown", function(event) {
 	INPUT._manageKeyDown(event);
@@ -132,8 +219,8 @@ document.addEventListener("keyup", function(event) {
 	INPUT._manageKeyUp(event);
 });
 document.addEventListener("mousedown", function(event) {
-	INPUT._manageButtonDown(event || window.event);
+	INPUT._manageMouseDown(event || window.event);
 });
 document.addEventListener("mouseup", function(event) {
-	INPUT._manageButtonUp(event || window.event);
+	INPUT._manageMouseUp(event || window.event);
 });
