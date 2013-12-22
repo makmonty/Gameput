@@ -87,7 +87,7 @@ Supported keys/buttons
 * `mousecentre`: Same as `mousecenter`
 * `click`: Any mouse button
 
-### Gamepad
+### Gamepad (experimental)
 
 The gamepads have an special notation, as there can be more than one gamepad connected. The format is `gamepad_name/button_or_axis_name`
 
