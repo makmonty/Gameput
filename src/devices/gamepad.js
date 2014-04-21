@@ -38,21 +38,21 @@ INPUT.devices.gamepad.getCodes = function(name) {};
 INPUT.devices.gamepad.isPressed = function(name) {
 	var gpdesc = this.getGamepadButtonDescription(name),
 		gptype = (gpdesc.type == "axis")? "axes" : "buttons",
-		gamepads = this.getGamepads();
+		gamepads = INPUT.getGamepads();
 	return gamepads[gpdesc.gamepad] && Math.abs(gamepads[gpdesc.gamepad][gptype][gpdesc.num]) > this.GAMEPAD_ANALOGUE_THRESHOLD;
 };
 
-INPUT.devices.gamepad.getGamepads = function() {
+INPUT.getGamepads = function() {
 	return navigator.getGamepads && navigator.getGamepads()
 		|| navigator.webkitGetGamepads && navigator.webkitGetGamepads()
 		|| navigator.webkitGamepads;
 	
 };
 
-INPUT.devices.gamepad.getAxis = function(name) {
-	var gpdesc = this.getGamepadButtonDescription(name);
-	if(this.getGamepads()[gpdesc.gamepad])
-		return this.getGamepads()[gpdesc.gamepad].axes[gpdesc.num];
+INPUT.getAxis = function(name) {
+	var gpdesc = INPUT.devices.gamepad.getGamepadButtonDescription(name);
+	if(INPUT.getGamepads()[gpdesc.gamepad])
+		return INPUT.getGamepads()[gpdesc.gamepad].axes[gpdesc.num];
 	else
 		return 0;
 };
