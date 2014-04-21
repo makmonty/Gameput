@@ -1,9 +1,9 @@
-INPUT = { REVISION:2 };
-INPUT.devices = {};
-INPUT.pressed_combinations = {};
-INPUT.map = {};
+GAMEPUT = { REVISION:2 };
+GAMEPUT.devices = {};
+GAMEPUT.pressed_combinations = {};
+GAMEPUT.map = {};
 
-INPUT.isPressed = function(combinations) {
+GAMEPUT.isPressed = function(combinations) {
 	var combs = this.splitCombinations(combinations),
 		c,
 		i,n,
@@ -28,7 +28,7 @@ INPUT.isPressed = function(combinations) {
 	return false;
 };
 
-INPUT.splitCombinations = function(combinations) {
+GAMEPUT.splitCombinations = function(combinations) {
 	var combArray = combinations.split(" "), c = [];
 	for(var i=0,n=combArray.length; i<n; i++) {
 		c.push(this.splitCombination(combArray[i]));
@@ -36,11 +36,11 @@ INPUT.splitCombinations = function(combinations) {
 	return c;
 };
 
-INPUT.splitCombination = function(combination) {
+GAMEPUT.splitCombination = function(combination) {
 	return combination.split("+");
 };
 
-INPUT.findKeyDevice = function(name) {
+GAMEPUT.findKeyDevice = function(name) {
 	for(var d in this.devices) {
 		if(this.devices.hasOwnProperty(d) && this.devices[d].isMine(name))
 			return d;
@@ -49,17 +49,17 @@ INPUT.findKeyDevice = function(name) {
 	return null;
 };
 
-INPUT.getCodes = function(name, device) {
+GAMEPUT.getCodes = function(name, device) {
 	return this.devices[device].getCodes(name);
 };
 	
-INPUT.bind = function(comb, callback, prevent_repeat) {
+GAMEPUT.bind = function(comb, callback, prevent_repeat) {
 	if(typeof prevent_repeat == "undefined")
 		prevent_repeat = true;
 	
 	var fndown = function(e) {
-		if(INPUT.isPressed(comb) && (!prevent_repeat || !INPUT.pressed_combinations[comb])) {
-			if(prevent_repeat) INPUT.pressed_combinations[comb] = true;
+		if(GAMEPUT.isPressed(comb) && (!prevent_repeat || !GAMEPUT.pressed_combinations[comb])) {
+			if(prevent_repeat) GAMEPUT.pressed_combinations[comb] = true;
 			return callback(e);
 		}
 	};
@@ -69,7 +69,7 @@ INPUT.bind = function(comb, callback, prevent_repeat) {
 
 	if(prevent_repeat) {
 		var fnup = function(e) {
-			INPUT.pressed_combinations[comb] = false;
+			GAMEPUT.pressed_combinations[comb] = false;
 		};
 		
 		document.addEventListener("keyup", fnup);
@@ -77,10 +77,10 @@ INPUT.bind = function(comb, callback, prevent_repeat) {
 	}
 };
 
-INPUT.isNumber = function(n) {
+GAMEPUT.isNumber = function(n) {
 	return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
-INPUT.isArray = function(a) {
+GAMEPUT.isArray = function(a) {
 	return Object.prototype.toString.call(a) === '[object Array]';
 };

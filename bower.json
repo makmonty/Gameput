@@ -1,0 +1,26 @@
+{
+  "name": "Gameput",
+  "version": "1",
+  "homepage": "https://github.com/makmonty/Gameput",
+  "authors": [
+    "Angel Brasero <angel.brasero@gmail.com>"
+  ],
+  "description": "A game oriented input manager. Now with experimental gamepad support",
+  "main": "build/gameput.js",
+  "keywords": [
+    "input",
+    "gamepad",
+    "mouse",
+    "keyboard",
+    "game",
+    "webgame"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

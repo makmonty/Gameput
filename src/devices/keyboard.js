@@ -1,6 +1,6 @@
-INPUT.devices.keyboard = {};
-INPUT.devices.keyboard.pressed = {};
-INPUT.devices.keyboard.map = {
+GAMEPUT.devices.keyboard = {};
+GAMEPUT.devices.keyboard.pressed = {};
+GAMEPUT.devices.keyboard.map = {
 		'backspace': 8, 'tab': 9, 'enter': 13, 'shift': 16, 'control': 17, 'alt': 18, 'capslock': 20, 'altgr': 225, 'del': 46,
 		'pagedown': 33, 'pageup': 34, 'end': 35, 'home': 36,
 		'left': 37, 'up': 38, 'right': 39, 'down': 40,
@@ -18,15 +18,15 @@ INPUT.devices.keyboard.map = {
 		'5': ['numpad5','board5'], '6': ['numpad6','board6'], '7': ['numpad7','board7'], '8': ['numpad8','board8'], '9': ['numpad9','board9']
 };
 
-INPUT.devices.keyboard.isMine = function(name) {
+GAMEPUT.devices.keyboard.isMine = function(name) {
 	return typeof this.map[name] != "undefined";
 };
 
-INPUT.devices.keyboard.getCodes = function(name) {
+GAMEPUT.devices.keyboard.getCodes = function(name) {
 	var v = this.map[name];
 	
 	if(typeof v != "undefined") {
-		if(INPUT.isNumber(v)) {
+		if(GAMEPUT.isNumber(v)) {
 			return [v];
 			
 		} else if(typeof v === "string") {
@@ -44,7 +44,7 @@ INPUT.devices.keyboard.getCodes = function(name) {
 	}
 };
 
-INPUT.devices.keyboard.isPressed = function(name) {
+GAMEPUT.devices.keyboard.isPressed = function(name) {
 	var codes = this.getCodes(name);
 	for(i=0,n=codes.length; i<n; i++) {
 		if(this.pressed[codes[i]]) {
@@ -54,17 +54,17 @@ INPUT.devices.keyboard.isPressed = function(name) {
 	return false;
 };
 
-INPUT.devices.keyboard._manageKeyDown = function(event) {
+GAMEPUT.devices.keyboard._manageKeyDown = function(event) {
 	this.pressed[event.keyCode] = true;
 };
 
-INPUT.devices.keyboard._manageKeyUp = function(event) {
+GAMEPUT.devices.keyboard._manageKeyUp = function(event) {
 	this.pressed[event.keyCode] = false;
 };
 
 document.addEventListener("keydown", function(event) {
-	INPUT.devices.keyboard._manageKeyDown(event);
+	GAMEPUT.devices.keyboard._manageKeyDown(event);
 });
 document.addEventListener("keyup", function(event) {
-	INPUT.devices.keyboard._manageKeyUp(event);
+	GAMEPUT.devices.keyboard._manageKeyUp(event);
 });

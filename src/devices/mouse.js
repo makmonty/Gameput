@@ -1,6 +1,6 @@
-INPUT.devices.mouse = {};
-INPUT.devices.mouse.pressed = {};
-INPUT.devices.mouse.map = {
+GAMEPUT.devices.mouse = {};
+GAMEPUT.devices.mouse.pressed = {};
+GAMEPUT.devices.mouse.map = {
 		'mouseleft': 1,
 		'mousecenter': 2,
 		'mouseright': 3,
@@ -8,15 +8,15 @@ INPUT.devices.mouse.map = {
 		'click': ['mouseleft', 'mouseright', 'mousecenter']
 };
 
-INPUT.devices.mouse.isMine = function(name) {
+GAMEPUT.devices.mouse.isMine = function(name) {
 	return typeof this.map[name] != "undefined";
 };
 
-INPUT.devices.mouse.getCodes = function(name) {
+GAMEPUT.devices.mouse.getCodes = function(name) {
 	var v = this.map[name];
 	
 	if(typeof v != "undefined") {
-		if(INPUT.isNumber(v)) {
+		if(GAMEPUT.isNumber(v)) {
 			return [v];
 			
 		} else if(typeof v === "string") {
@@ -34,7 +34,7 @@ INPUT.devices.mouse.getCodes = function(name) {
 	}
 };
 
-INPUT.devices.mouse.isPressed = function(name) {
+GAMEPUT.devices.mouse.isPressed = function(name) {
 	var codes = this.getCodes(name);
 	for(i=0,n=codes.length; i<n; i++) {
 		if(this.pressed[codes[i]]) {
@@ -44,18 +44,18 @@ INPUT.devices.mouse.isPressed = function(name) {
 	return false;
 };
 
-INPUT.devices.mouse._manageMouseDown = function(event) {
+GAMEPUT.devices.mouse._manageMouseDown = function(event) {
 	this.pressed[event.which] = true;
 };
 
-INPUT.devices.mouse._manageMouseUp = function(event) {
+GAMEPUT.devices.mouse._manageMouseUp = function(event) {
 	this.pressed[event.which] = false;
 };
 
 document.addEventListener("mousedown", function(event) {
-	INPUT.devices.mouse._manageMouseDown(event || window.event);
+	GAMEPUT.devices.mouse._manageMouseDown(event || window.event);
 });
 
 document.addEventListener("mouseup", function(event) {
-	INPUT.devices.mouse._manageMouseUp(event || window.event);
+	GAMEPUT.devices.mouse._manageMouseUp(event || window.event);
 });

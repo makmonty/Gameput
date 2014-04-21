@@ -1,8 +1,8 @@
-INPUT.devices.gamepad = {};
+GAMEPUT.devices.gamepad = {};
 
-INPUT.devices.gamepad.GAMEPAD_ANALOGUE_THRESHOLD = 0.5;
+GAMEPUT.devices.gamepad.GAMEPAD_ANALOGUE_THRESHOLD = 0.5;
 
-INPUT.devices.gamepad.map = {
+GAMEPUT.devices.gamepad.map = {
 		button: {
 			'1': 0,
 			'2': 1,
@@ -29,35 +29,35 @@ INPUT.devices.gamepad.map = {
 		}
 };
 
-INPUT.devices.gamepad.isMine = function(name) {
+GAMEPUT.devices.gamepad.isMine = function(name) {
 	return name.substr(0,7) == "gamepad";
 };
 
-INPUT.devices.gamepad.getCodes = function(name) {};
+GAMEPUT.devices.gamepad.getCodes = function(name) {};
 
-INPUT.devices.gamepad.isPressed = function(name) {
+GAMEPUT.devices.gamepad.isPressed = function(name) {
 	var gpdesc = this.getGamepadButtonDescription(name),
 		gptype = (gpdesc.type == "axis")? "axes" : "buttons",
-		gamepads = INPUT.getGamepads();
+		gamepads = GAMEPUT.getGamepads();
 	return gamepads[gpdesc.gamepad] && Math.abs(gamepads[gpdesc.gamepad][gptype][gpdesc.num]) > this.GAMEPAD_ANALOGUE_THRESHOLD;
 };
 
-INPUT.getGamepads = function() {
+GAMEPUT.getGamepads = function() {
 	return navigator.getGamepads && navigator.getGamepads()
 		|| navigator.webkitGetGamepads && navigator.webkitGetGamepads()
 		|| navigator.webkitGamepads;
 	
 };
 
-INPUT.getAxis = function(name) {
-	var gpdesc = INPUT.devices.gamepad.getGamepadButtonDescription(name);
-	if(INPUT.getGamepads()[gpdesc.gamepad])
-		return INPUT.getGamepads()[gpdesc.gamepad].axes[gpdesc.num];
+GAMEPUT.getAxis = function(name) {
+	var gpdesc = GAMEPUT.devices.gamepad.getGamepadButtonDescription(name);
+	if(GAMEPUT.getGamepads()[gpdesc.gamepad])
+		return GAMEPUT.getGamepads()[gpdesc.gamepad].axes[gpdesc.num];
 	else
 		return 0;
 };
 
-INPUT.devices.gamepad.getGamepadButtonDescription = function(name) {
+GAMEPUT.devices.gamepad.getGamepadButtonDescription = function(name) {
 	var gpcode = name.split("/");
 	var gpnum = parseInt(gpcode[0].substr(7))-1;
 	var gptype, gpbutton;
