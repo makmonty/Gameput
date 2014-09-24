@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title= title
+
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    block head
+
+  body
+    #main
+      block content
+
+    script(src='http://code.jquery.com/jquery-2.1.1.min.js')
+    script(src='http://localhost/input.js/build/gameput.js')
+    script(src='/javascripts/application.js')
+
+    block javascripts

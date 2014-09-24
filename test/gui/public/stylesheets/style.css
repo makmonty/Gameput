@@ -1,0 +1,21 @@
+@font-face {
+	font-family: Hardpixel;
+	src: url("Hardpixel.otf") format("opentype");
+}
+
+
+body {
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	background: white;
+	text-align:center;
+}
+
+a {
+	color: #00B7FF;
+}
+
+#main {
+	margin:0 auto;
+	text-align:left;
+	width:960px;
+}

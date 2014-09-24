@@ -39,14 +39,23 @@ GAMEPUT.devices.gamepad.isPressed = function(name) {
 	var gpdesc = this.getGamepadButtonDescription(name),
 		gptype = (gpdesc.type == "axis")? "axes" : "buttons",
 		gamepads = GAMEPUT.getGamepads();
-	return gamepads[gpdesc.gamepad] && Math.abs(gamepads[gpdesc.gamepad][gptype][gpdesc.num]) > this.GAMEPAD_ANALOGUE_THRESHOLD;
+	return gamepads[gpdesc.gamepad]
+			&& gamepads[gpdesc.gamepad][gptype][gpdesc.num]
+			&& (gpdesc.type == "button" && gamepads[gpdesc.gamepad][gptype][gpdesc.num].pressed
+			 	|| gpdesc.type == "axis" && Math.abs(gamepads[gpdesc.gamepad][gptype][gpdesc.num]) > this.GAMEPAD_ANALOGUE_THRESHOLD);
+};
+
+GAMEPUT.devices.gamepad.getDown = function(name) {
+};
+
+GAMEPUT.devices.gamepad.getUp = function(name) {
 };
 
 GAMEPUT.getGamepads = function() {
 	return navigator.getGamepads && navigator.getGamepads()
 		|| navigator.webkitGetGamepads && navigator.webkitGetGamepads()
 		|| navigator.webkitGamepads;
-	
+
 };
 
 GAMEPUT.getAxis = function(name) {
@@ -68,10 +77,14 @@ GAMEPUT.devices.gamepad.getGamepadButtonDescription = function(name) {
 		gptype = gpcode[1];
 		gpbutton = parseInt(gpcode[2])-1;
 	}
-	
+
 	return {
 		gamepad: gpnum,
 		type: gptype,
 		num: gpbutton
 	};
+};
+
+GAMEPUT.devices.gamepad.frameSetup = function() {
+
 };
